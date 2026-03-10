@@ -54,4 +54,4 @@ After creating an issue, the skills accept a URL or `owner/repo#number`. If a pl
 
 ## Related
 
-These skills are described in an article on Hashnode (link coming soon).
+These skills are described in [Claude Code Doesn't Remember. Here's How I Fixed That.](https://gjoranv.hashnode.dev/claude-code-doesn-t-remember-here-s-how-i-fixed-that)
