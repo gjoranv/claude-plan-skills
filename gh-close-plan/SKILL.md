@@ -14,9 +14,9 @@ Close the GitHub issue $ARGUMENTS (issue URL or `owner/repo#number`). If no argu
 3. Use the Read and Edit tools to modify the temp files
 4. Upload using `--input` with `jq` to properly JSON-encode the content:
 
-- Edit issue body: `gh api repos/OWNER/REPO/issues/NUMBER -X PATCH --input <(jq -Rs '{body: .}' <tempdir>/body.md)`
-- Create comment: `gh api repos/OWNER/REPO/issues/NUMBER/comments --input <(jq -Rs '{body: .}' <tempdir>/comment.md)`
-- Edit comment: `gh api repos/OWNER/REPO/issues/comments/COMMENT_ID -X PATCH --input <(jq -Rs '{body: .}' <tempdir>/comment-COMMENTID.md)`
+- Edit issue body: `jq -Rs '{body: .}' <tempdir>/body.md | gh api repos/OWNER/REPO/issues/NUMBER -X PATCH --input -`
+- Create comment: `jq -Rs '{body: .}' <tempdir>/comment.md | gh api repos/OWNER/REPO/issues/NUMBER/comments --input -`
+- Edit comment: `jq -Rs '{body: .}' <tempdir>/comment-COMMENTID.md | gh api repos/OWNER/REPO/issues/comments/COMMENT_ID -X PATCH --input -`
 
 Never embed content directly in shell arguments or use `-f body=@file` (it uploads the literal string, not the file contents). Always fetch the latest from GitHub before making changes.
 
