@@ -1,15 +1,16 @@
 ---
 name: gh-update-plan
 description: Update a GitHub plan issue with progress. Use when planning a task, or when the user tells you to "update the github plan issue".
-allowed-tools: Bash, Read, Edit
+argument-hint: "[owner/repo#number] [--local]"
+allowed-tools: Bash, Read, Write, Edit
 ---
 
-You must actually run `gh` commands to update the issue; do not just describe what you would do. Do not ask for permission to update comments — it is expected.
+Exit plan mode before executing this skill. You must actually run `gh` commands to update the issue; do not just describe what you would do. Use `gh` to read, edit, and comment on issues. This includes using `gh api` to update issue bodies and edit or create comments. Do not ask for permission to update comments — it is expected.
 
 **Workflow for editing issue bodies and comments:**
-1. Create a unique temp directory: `mktemp -d /tmp/plan-update-XXXXX`
-2. Fetch content from GitHub and save to files in that directory (e.g. `body.md`, `comment-COMMENTID.md`)
-3. Use the Read and Edit tools to modify the temp files
+1. Use a stable temp directory per issue: `/tmp/plan-update-OWNER-REPO-NUMBER`. This allows reuse across invocations.
+2. **Fetch or reuse**: If `--local` is passed and the temp directory already has files from a previous invocation, skip fetching and reuse the cached files. Otherwise, fetch content from GitHub using `gh api` and save to the temp directory using the Write tool. Do NOT use shell redirects (`>`).
+3. Use the Read and Edit tools to modify the temp files (not shell commands like sed/awk).
 4. Upload using `--input` with `jq` to properly JSON-encode the content:
 
 - Edit issue body: `jq -Rs '{body: .}' <tempdir>/body.md | gh api repos/OWNER/REPO/issues/NUMBER -X PATCH --input -`
@@ -18,7 +19,7 @@ You must actually run `gh` commands to update the issue; do not just describe wh
 
 Never embed content directly in shell arguments or use `-f body=@file` (it uploads the literal string, not the file contents).
 
-Always fetch the latest from GitHub before making changes. Do not rely on previously fetched copies that may be stale.
+By default, always fetch the latest from GitHub before making changes. Use `--local` only when you know the issue hasn't been updated since the last fetch.
 
 Never @mention other users in plan issues or comments.
 
@@ -28,10 +29,12 @@ Update the GitHub issue $ARGUMENTS (issue URL or `owner/repo#number`). If no arg
 2. **Conformance check**: Ensure the issue follows the standard plan format. If not, lightly restructure:
    - Convert plain step lists to checkboxes (`- [ ]` / `- [x]`)
    - Add missing section headings (Description, Steps, Links)
-   - If there is no diagram and the work would benefit from one, add it in a separate comment (Mermaid preferred, three sentence max caption, no "Caption:" prefix)
+   - If there is no diagram in either the issue body or comments, and the work would benefit from one, add a diagram in a separate comment (Mermaid preferred, three sentence max caption, no "Caption:" prefix)
 3. Check off completed steps (`- [x]`) in the issue body based on the work done in this conversation.
 4. If the issue body or comments contain a diagram, check if it is still accurate. If not, update it.
-5. If steps need rewording or new steps are needed, update them directly in the body.
-6. If the issue contains links to relevant documentation or related issues, check if they are still relevant.
-7. Add or update a **Commits** table in a separate comment with all git commits related to this work. Each row should include the git ref (short SHA), description, and date. If a commits comment already exists, edit it rather than creating a new one. Include links to related PRs.
-8. Add a comment summarizing what was done in this session: new insights, changes in understanding, and any remaining open questions.
+5. If the issue body contains steps that need rewording or new steps, update them directly in the body.
+6. If the issue contains links to relevant documentation, code, resources, and related issues, check if they are still relevant. If not, update them.
+7. If useful commands for testing or verifying the work were discovered during this session, add or update a **Useful commands** comment (separate from the issue body). If such a comment already exists, edit it rather than creating a new one.
+8. Add or update a **Commits** table in a separate comment (not the issue body) with all git commits related to this work. Each row should include the git ref (short SHA), description, and date. If a commits comment already exists, edit it rather than creating a new one. Also include links to related PRs. Note: these hashes may be from a feature branch and could change after merge — the `gh-close-plan` skill will update them to final hashes on main.
+9. Review existing comments on the issue for outdated or incorrect information. If the comment is your own, edit it directly with corrections. If it belongs to someone else, add a reply with the correction.
+10. Add a comment summarizing what was done in this session: new insights, changes in understanding, and any remaining open questions.
