@@ -30,11 +30,12 @@ Update the GitHub issue $ARGUMENTS (issue URL or `owner/repo#number`). If no arg
    - Convert plain step lists to checkboxes (`- [ ]` / `- [x]`)
    - Add missing section headings (Description, Steps, Links)
    - If there is no diagram in either the issue body or comments, and the work would benefit from one, add a diagram in a separate comment (Mermaid preferred, three sentence max caption, no "Caption:" prefix)
-3. Check off completed steps (`- [x]`) in the issue body based on the work done in this conversation.
-4. If the issue body or comments contain a diagram, check if it is still accurate. If not, update it.
-5. If the issue body contains steps that need rewording or new steps, update them directly in the body.
-6. If the issue contains links to relevant documentation, code, resources, and related issues, check if they are still relevant. If not, update them.
-7. If useful commands for testing or verifying the work were discovered during this session, add or update a **Useful commands** comment (separate from the issue body). If such a comment already exists, edit it rather than creating a new one.
-8. Add or update a **Commits** table in a separate comment (not the issue body) with all git commits related to this work. Each row should include the git ref (short SHA), description, and date. If a commits comment already exists, edit it rather than creating a new one. Also include links to related PRs. Note: these hashes may be from a feature branch and could change after merge — the `gh-close-plan` skill will update them to final hashes on main.
-9. Review existing comments on the issue for outdated or incorrect information. If the comment is your own, edit it directly with corrections. If it belongs to someone else, add a reply with the correction.
-10. Add a comment summarizing what was done in this session: new insights, changes in understanding, and any remaining open questions.
+3. If the design approach has changed or new key decisions were made, update the **Design** comment (or the body for old-format issues that have the how in the body). Omit raw exploration; only include conclusions.
+4. Check off completed steps (`- [x]`) based on the work done in this conversation. Steps may be in a separate **Steps** comment (new format) or in the issue body (old format). Check both locations and update wherever the steps are found.
+5. If the issue body or comments contain a diagram, check if it is still accurate. If not, update it.
+6. If steps need rewording or new steps are needed, update them wherever they are (Steps comment or body). If steps are still in the body and there are many updates, consider migrating them to a separate Steps comment.
+7. Update the **Links** comment with any new references (child issues, PRs, documentation, resources). Links may be in a separate comment (new format) or in the body (old format). If in the body, consider migrating to a comment.
+8. If useful commands for testing or verifying the work were discovered during this session, add or update a **Useful commands** comment (separate from the issue body). If such a comment already exists, edit it rather than creating a new one.
+9. Add or update a **Commits** table in a separate comment (not the issue body) with all git commits related to this work. Each row should include the git ref (short SHA), description, and date. If a commits comment already exists, edit it rather than creating a new one. Also include links to related PRs. Note: these hashes may be from a feature branch and could change after merge — the `gh-close-plan` skill will update them to final hashes on main.
+10. Review existing comments on the issue for outdated or incorrect information. If the comment is your own, edit it directly with corrections. If it belongs to someone else, add a reply with the correction.
+11. Add a comment summarizing what was done in this session: new insights, changes in understanding, and any remaining open questions.

@@ -8,30 +8,31 @@ Claude Code starts fresh every session. Complex tasks that span multiple convers
 
 ## The solution
 
-Use a GitHub issue as a persistent plan. Four skills manage the full lifecycle:
+Use a GitHub issue as a persistent plan. Five skills manage the full lifecycle:
 
 | Skill | What it does |
 |---|---|
-| `/gh-create-plan` | Creates a structured GitHub issue with description, steps (as checkboxes), diagram, and links |
-| `/gh-implement-plan` | Reads the issue, works through steps in order, commits after each step, checks off checkboxes |
+| `/gh-create-plan` | Creates a structured GitHub issue with description, design, steps, diagram, and links as separate comments |
+| `/gh-read-plan` | Reads the issue, identifies completed and pending steps, and briefs the session |
+| `/gh-implement-plan` | Works through steps in order, commits after each step, checks off checkboxes |
 | `/gh-update-plan` | Updates the issue with session progress, new decisions, and a commits table |
-| `/gh-close-plan` | Finalizes the issue with a session log, final commit hashes, and closes it |
+| `/gh-close-plan` | Consolidates session logs, captures learnings, finalizes commit hashes, and closes |
 
-A new conversation can pick up exactly where the last one left off by reading the issue.
+A new conversation can pick up exactly where the last one left off by reading the issue with `/gh-read-plan`.
 
 ## Installation
 
 Copy the skill directories into your Claude Code skills folder:
 
 ```bash
-cp -r gh-create-plan gh-implement-plan gh-update-plan gh-close-plan ~/.claude/skills/
+cp -r gh-create-plan gh-read-plan gh-implement-plan gh-update-plan gh-close-plan ~/.claude/skills/
 ```
 
 Or clone this repo and symlink:
 
 ```bash
 git clone https://github.com/gjoranv/claude-plan-skills ~/git/claude-plan-skills
-for skill in gh-create-plan gh-implement-plan gh-update-plan gh-close-plan; do
+for skill in gh-create-plan gh-read-plan gh-implement-plan gh-update-plan gh-close-plan; do
   ln -s ~/git/claude-plan-skills/$skill ~/.claude/skills/$skill
 done
 ```
@@ -40,6 +41,7 @@ done
 
 ```
 /gh-create-plan owner/repo        # Create a plan issue in the given repo
+/gh-read-plan owner/repo#42      # Read the plan into the current session
 /gh-implement-plan owner/repo#42  # Start implementing the plan
 /gh-update-plan                   # Update the plan after a session
 /gh-close-plan                    # Finalize and close the plan

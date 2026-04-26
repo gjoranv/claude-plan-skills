@@ -22,12 +22,18 @@ Close the GitHub issue $ARGUMENTS (issue URL or `owner/repo#number`). If no argu
 Never embed content directly in shell arguments or use `-f body=@file` (it uploads the literal string, not the file contents). Always fetch the latest from GitHub before making changes. Do not rely on previously fetched copies that may be stale.
 
 1. Read the issue and its comments to understand the full history of the work.
-2. Check off completed steps (`- [x]`) in the issue body based on the work done in this conversation.
+2. Check off completed steps (`- [x]`) based on the work done. Steps may be in a separate **Steps** comment (new format) or in the issue body (old format). Check both locations.
 3. Verify that all steps are checked off. If any are incomplete, ask the user whether to proceed or leave the issue open.
 4. Add or update a **Commits** table comment with the final commit hashes from main. Feature branch hashes change after squash/rebase merge, so look up the corresponding commits on main and replace the old hashes.
 5. **Clean up session comments**: Delete all individual session comments and replace them with a single consolidated **Session Log** comment. Structure it with dated sections (`### YYYY-MM-DD`) for each session that contributed something worth keeping. Include only key findings, decisions, and insights. Drop sessions that had nothing noteworthy. Remove back-and-forth, minor details, and redundant information.
-6. Add a closing comment summarizing:
+6. **Capture learnings**: Before closing, review the session for non-obvious discoveries worth persisting. Ask the user: "Anything worth capturing?" If yes, propose where each belongs:
+   - **Instructions file** (CLAUDE.md, AGENTS.md, or similar): conventions, gotchas, build quirks
+   - **Repo docs** (`docs/` or similar): architecture insights, design rationale useful to humans too
+   - **Memory**: cross-project patterns, user preferences
+
+   Apply confirmed items. If the user says nothing to capture, move on.
+7. Add a closing comment summarizing:
    * What was accomplished
    * Links to the final PR(s) or commits
    * Any follow-up work or known limitations
-7. Close the issue.
+8. Close the issue.

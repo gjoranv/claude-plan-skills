@@ -8,12 +8,12 @@ allowed-tools: Bash, Read, Grep, Glob, Edit, Write
 Implement the plan from GitHub issue $ARGUMENTS (issue URL or `owner/repo#number`). If no argument is given, use the issue referenced earlier in this conversation. If no issue can be determined, ask the user.
 
 1. **Prepare branch**: If on main/master, fetch the latest and create a feature branch with a descriptive name derived from the plan issue title. If already on a feature branch, continue on it.
-2. **Read the issue** and identify all steps (checkboxes). Before starting implementation, think about the design: What abstractions are needed? Where should the boundaries be? Is there a simpler approach than what's described? Flag any design concerns to the user before coding.
+2. **Read the issue** and identify all steps (checkboxes). Steps may be in a separate **Steps** comment (new format) or in the issue body (old format). Check both. Before starting implementation, think about the design: What abstractions are needed? Where should the boundaries be? Is there a simpler approach than what's described? Flag any design concerns to the user before coding.
 3. **Present the steps** to the user and confirm which step to start with.
 4. **For each step**, in order:
    a. Implement the change.
    b. Stage and commit the changes with a descriptive commit message. Do not reference the issue.
-   c. Check off the step (`- [x]`) on the issue.
+   c. Check off the step (`- [x]`) on the issue. Update wherever the steps are found (Steps comment or body).
 5. **After all steps are complete**, present a summary of what was done for each step (files changed, key decisions). Tell the user to review the commits and push when ready.
 
 Rules:
