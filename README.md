@@ -8,7 +8,7 @@ Claude Code starts fresh every session. Complex tasks that span multiple convers
 
 ## The solution
 
-Use a GitHub issue as a persistent plan. Five skills manage the full lifecycle:
+Use a GitHub issue as a persistent plan. Six skills manage the full lifecycle:
 
 | Skill | What it does |
 |---|---|
@@ -17,23 +17,24 @@ Use a GitHub issue as a persistent plan. Five skills manage the full lifecycle:
 | `/gh-implement-plan` | Works through steps in order, commits after each step, checks off checkboxes |
 | `/gh-update-plan` | Updates the issue with session progress, new decisions, and a commits table |
 | `/gh-close-plan` | Consolidates session logs, captures learnings, finalizes commit hashes, and closes |
+| `/handover` | Prepares a handover prompt for continuing work in a new session |
 
-A new conversation can pick up exactly where the last one left off by reading the issue with `/gh-read-plan`.
+A new conversation can pick up exactly where the last one left off by reading the issue with `/gh-read-plan`, or by pasting a `/handover` prompt from the previous session.
 
 ## Installation
 
 Copy the skill directories into your Claude Code skills folder:
 
 ```bash
-cp -r gh-create-plan gh-read-plan gh-implement-plan gh-update-plan gh-close-plan ~/.claude/skills/
+cp -r gh-create-plan gh-read-plan gh-implement-plan gh-update-plan gh-close-plan handover ~/.claude/skills/
 ```
 
 Or clone and symlink (recommended — picks up new skills on `git pull`):
 
 ```bash
 git clone https://github.com/gjoranv/claude-plan-skills ~/git/claude-plan-skills
-for d in ~/git/claude-plan-skills/gh-*/; do
-  ln -sf "$d" ~/.claude/skills/
+for d in ~/git/claude-plan-skills/*/SKILL.md; do
+  ln -sfn "$(dirname "$d")" ~/.claude/skills/
 done
 ```
 
@@ -45,6 +46,7 @@ done
 /gh-implement-plan owner/repo#42  # Start implementing the plan
 /gh-update-plan                   # Update the plan after a session
 /gh-close-plan                    # Finalize and close the plan
+/handover                         # Prepare a handover for a new session
 ```
 
 After creating an issue, the skills accept a URL or `owner/repo#number`. If a plan issue was referenced earlier in the conversation, the argument can be omitted.
