@@ -28,12 +28,12 @@ Copy the skill directories into your Claude Code skills folder:
 cp -r gh-create-plan gh-read-plan gh-implement-plan gh-update-plan gh-close-plan ~/.claude/skills/
 ```
 
-Or clone this repo and symlink:
+Or clone and symlink (recommended — picks up new skills on `git pull`):
 
 ```bash
 git clone https://github.com/gjoranv/claude-plan-skills ~/git/claude-plan-skills
-for skill in gh-create-plan gh-read-plan gh-implement-plan gh-update-plan gh-close-plan; do
-  ln -s ~/git/claude-plan-skills/$skill ~/.claude/skills/$skill
+for d in ~/git/claude-plan-skills/gh-*/; do
+  ln -sf "$d" ~/.claude/skills/
 done
 ```
 
