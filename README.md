@@ -38,6 +38,14 @@ for d in ~/git/claude-plan-skills/*/SKILL.md; do
 done
 ```
 
+### Codex
+
+These skills are agent-neutral and work with Codex. Copy them to the Codex skills folder:
+
+```bash
+cp -r gh-create-plan gh-read-plan gh-implement-plan gh-update-plan gh-close-plan handover ~/.codex/skills/
+```
+
 ## Usage
 
 ```
