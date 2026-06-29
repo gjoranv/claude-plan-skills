@@ -8,7 +8,7 @@ Claude Code starts fresh every session. Complex tasks that span multiple convers
 
 ## The solution
 
-Use a GitHub issue as a persistent plan. Six skills manage the full lifecycle:
+Use a GitHub issue as a persistent plan. Seven skills manage the full lifecycle:
 
 | Skill | What it does |
 |---|---|
@@ -17,6 +17,7 @@ Use a GitHub issue as a persistent plan. Six skills manage the full lifecycle:
 | `/gh-implement-plan` | Works through steps in order, commits after each step, checks off checkboxes |
 | `/gh-update-plan` | Updates the issue with session progress, new decisions, and a commits table |
 | `/gh-close-plan` | Consolidates session logs, captures learnings, finalizes commit hashes, and closes |
+| `/gh-create-pr` | Creates a PR using `--web` to open the browser with title and body pre-filled for editing before submission |
 | `/handover` | Prepares a handover prompt for continuing work in a new session |
 
 A new conversation can pick up exactly where the last one left off by reading the issue with `/gh-read-plan`, or by pasting a `/handover` prompt from the previous session.
@@ -26,7 +27,7 @@ A new conversation can pick up exactly where the last one left off by reading th
 Copy the skill directories into your Claude Code skills folder:
 
 ```bash
-cp -r gh-create-plan gh-read-plan gh-implement-plan gh-update-plan gh-close-plan handover ~/.claude/skills/
+cp -r gh-create-plan gh-read-plan gh-implement-plan gh-update-plan gh-close-plan gh-create-pr handover ~/.claude/skills/
 ```
 
 Or clone and symlink (recommended — picks up new skills on `git pull`):
@@ -43,7 +44,7 @@ done
 These skills are agent-neutral and work with Codex. Copy them to the Codex skills folder:
 
 ```bash
-cp -r gh-create-plan gh-read-plan gh-implement-plan gh-update-plan gh-close-plan handover ~/.codex/skills/
+cp -r gh-create-plan gh-read-plan gh-implement-plan gh-update-plan gh-close-plan gh-create-pr handover ~/.codex/skills/
 ```
 
 ## Usage
@@ -54,6 +55,7 @@ cp -r gh-create-plan gh-read-plan gh-implement-plan gh-update-plan gh-close-plan
 /gh-implement-plan owner/repo#42  # Start implementing the plan
 /gh-update-plan                   # Update the plan after a session
 /gh-close-plan                    # Finalize and close the plan
+/gh-create-pr                     # Create a PR, opens browser for editing
 /handover                         # Prepare a handover for a new session
 ```
 
