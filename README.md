@@ -61,6 +61,10 @@ cp -r gh-create-plan gh-read-plan gh-implement-plan gh-update-plan gh-close-plan
 
 After creating an issue, the skills accept a URL or `owner/repo#number`. If a plan issue was referenced earlier in the conversation, the argument can be omitted.
 
+## Customization
+
+**PR footer**: Copy `gh-create-pr/pr-footer-example.md` to `~/.claude/skills/gh-create-pr/pr-footer.md` and edit. Appended to every PR body, separated by `---`. Supports `{{model}}` placeholder (replaced with the current model name at submission time).
+
 ## Requirements
 
 - [Claude Code](https://claude.ai/code)
