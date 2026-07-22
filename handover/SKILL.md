@@ -17,12 +17,12 @@ Prepare everything needed for a new conversation to continue the current work se
    - Update the plan issue (`/gh-update-plan`)
    - Commit uncommitted changes
    Ask the user which of these to do. Skip any already done.
-4. **Capture learnings**: Ask the user: "Anything worth capturing from this session?" If yes, propose where each belongs:
-   - **Instructions file** (CLAUDE.md, AGENTS.md, or similar): conventions, gotchas, build quirks
-   - **Repo docs** (`docs/` or similar): architecture insights, design rationale
-   - **Agent memory**: cross-project patterns, user preferences, or durable notes if the agent supports persistent memory
+4. **Capture learnings**: Review the conversation for surprises, gotchas, corrections, and non-obvious decisions. Propose where each belongs:
+   - **Instructions file** (CLAUDE.md, AGENTS.md, or similar): conventions, build quirks
+   - **Repo docs**: architecture insights, design rationale
+   - **Agent memory**: cross-project patterns, user preferences
 
-   Apply confirmed items. If nothing to capture, move on.
+   User approves, edits, or drops each suggestion.
 5. **Generate a handover prompt** that the user can paste into a new session. Include:
    - The plan issue reference (e.g. `/gh-read-plan owner/repo#12`)
    - The repo and branch to work in

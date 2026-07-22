@@ -24,16 +24,19 @@ Never embed content directly in shell arguments or use `-f body=@file` (it uploa
 1. Read the issue and its comments to understand the full history of the work.
 2. Check off completed steps (`- [x]`) based on the work done. Steps may be in a separate **Steps** comment (new format) or in the issue body (old format). Check both locations.
 3. Verify that all steps are checked off. If any are incomplete, ask the user whether to proceed or leave the issue open.
-4. Add or update a **Commits** table comment with the final commit hashes from main. Feature branch hashes change after squash/rebase merge, so look up the corresponding commits on main and replace the old hashes.
-5. **Clean up session comments**: Delete all individual session comments and replace them with a single consolidated **Session Log** comment. Structure it with dated sections (`### YYYY-MM-DD`) for each session that contributed something worth keeping. Include only key findings, decisions, and insights. Drop sessions that had nothing noteworthy. Remove back-and-forth, minor details, and redundant information.
-6. **Capture learnings**: Before closing, review the session for non-obvious discoveries worth persisting. Ask the user: "Anything worth capturing?" If yes, propose where each belongs:
+4. Finalize the **PRs** comment as a table: `| PR | What | Agent session |`. PR column: `org/repo#N` as a link. What column: brief description. Agent session column: the session that added the PR. If the existing comment uses a different format (bullet list, old-style table), reformat it to this table structure.
+5. **Clean up comments**: Non-structural comments fall into two categories based on their heading:
+   - **`### Session:` prefix**: These are session summaries. Delete them and consolidate into a single **Session Log** comment with dated sections (`### YYYY-MM-DD`). Keep only key findings, decisions, and insights. Drop sessions with nothing noteworthy.
+   - **Any other heading** (e.g. "Research:", "Considered:", "Implementation notes:", "Verification:"): These are standalone findings with lasting value. Keep them as separate comments, or merge into the Design comment if they are design decisions.
+   **Never delete structural comments** (Steps, Design, Diagram, Links, Useful commands, Agent sessions, PRs). See `gh-create-plan` for the canonical list and order.
+6. **Capture learnings**: Before closing, review the work for non-obvious discoveries worth persisting. If a durable-memory CLI is configured, offer its capture flow. Otherwise, ask the user "Anything worth capturing?" and propose where each belongs:
    - **Instructions file** (CLAUDE.md, AGENTS.md, or similar): conventions, gotchas, build quirks
-   - **Repo docs** (`docs/` or similar): architecture insights, design rationale useful to humans too
+   - **Repo docs** (`docs/` or similar): architecture insights, design rationale
    - **Memory**: cross-project patterns, user preferences
 
    Apply confirmed items. If the user says nothing to capture, move on.
 7. Add a closing comment summarizing:
    * What was accomplished
-   * Links to the final PR(s) or commits
+   * Links to the final PR(s)
    * Any follow-up work or known limitations
 8. Close the issue.
