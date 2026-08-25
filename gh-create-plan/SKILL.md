@@ -7,7 +7,15 @@ allowed-tools: Bash
 
 Never @mention other users in plan issues or comments.
 
-Create a GitHub issue in repo $ARGUMENTS containing the detailed plan for the work in this conversation.
+Create a GitHub issue containing the detailed plan for the work in this conversation.
+
+**Plan location.** Check for `~/.claude/skills/plan-config.json`. If it exists, read it for `personalRepo` and `teamRepo`. If $ARGUMENTS names a repo, use it; otherwise ask the user which scope applies and pick:
+
+- **Personal** (default): the `personalRepo` from config, or the repo given as argument.
+- **Company-shareable** (team plans and records): the `teamRepo` from config. Only offered if configured. A plan opened here distills into a team record on close.
+
+If no config file exists, use $ARGUMENTS as the repo. Plan issues should only be created in private or internal repos.
+
 Derive a concise issue title from the conversation context. Ask the user if unclear.
 
 The GitHub issue should be self-contained so that a new conversation can pick up the work without needing additional context. Omit raw exploration and back-and-forth; only include the conclusions.
