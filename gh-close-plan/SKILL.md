@@ -34,6 +34,8 @@ Never embed content directly in shell arguments or use `-f body=@file` (it uploa
    - **Repo docs** (`docs/` or similar): architecture insights, design rationale
    - **Memory**: cross-project patterns, user preferences
 
+   For a **company-shareable plan** (opened in a team plans repo rather than a personal one), distill a frozen team **record** summarizing what was decided and why, so the closed plan carries no unique living knowledge and becomes safely archival. One record per independently citable outcome (usually one per plan).
+
    Apply confirmed items. If the user says nothing to capture, move on.
 7. Add a closing comment summarizing:
    * What was accomplished
