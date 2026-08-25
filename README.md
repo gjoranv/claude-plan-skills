@@ -8,16 +8,16 @@ Claude Code starts fresh every session. Complex tasks that span multiple convers
 
 ## The solution
 
-Use a GitHub issue as a persistent plan. Seven skills manage the full lifecycle:
+Use a GitHub issue as a persistent plan:
 
 | Skill | What it does |
 |---|---|
-| `/gh-create-plan` | Creates a structured GitHub issue with description, design, steps, diagram, and links as separate comments |
+| `/gh-create-plan` | Creates a structured GitHub issue with steps, design, diagram, links, and agent sessions as separate comments |
 | `/gh-read-plan` | Reads the issue, identifies completed and pending steps, and briefs the session |
 | `/gh-implement-plan` | Works through steps in order, commits after each step, checks off checkboxes |
-| `/gh-update-plan` | Updates the issue with session progress, new decisions, and a commits table |
-| `/gh-close-plan` | Consolidates session logs, captures learnings, finalizes commit hashes, and closes |
-| `/gh-create-pr` | Creates a PR using `--web` to open the browser with title and body pre-filled for editing before submission |
+| `/gh-update-plan` | Updates the issue with progress, tracks which agent sessions worked on it. Supports `--preview` (diff before uploading) |
+| `/gh-close-plan` | Consolidates session logs, captures learnings, finalizes PRs table, and closes |
+| `/gh-create-pr` | Creates a PR using `--web` to open the browser with title and body pre-filled for editing |
 | `/handover` | Prepares a handover prompt for continuing work in a new session |
 
 A new conversation can pick up exactly where the last one left off by reading the issue with `/gh-read-plan`, or by pasting a `/handover` prompt from the previous session.
@@ -62,6 +62,17 @@ cp -r gh-create-plan gh-read-plan gh-implement-plan gh-update-plan gh-close-plan
 After creating an issue, the skills accept a URL or `owner/repo#number`. If a plan issue was referenced earlier in the conversation, the argument can be omitted.
 
 ## Customization
+
+**Plan repos**: Create `~/.claude/skills/plan-config.json` to configure where plan issues are created:
+
+```json
+{
+  "personalRepo": "your-user/plans",
+  "teamRepo": "your-org/team-plans"
+}
+```
+
+Both fields are optional. If only one is set, it's used by default. `/gh-create-plan` accepts `personal`, `team`, or `owner/repo` as argument. Plans in the `teamRepo` get a frozen team record on close.
 
 **PR footer**: Copy `gh-create-pr/pr-footer-example.md` to `~/.claude/skills/gh-create-pr/pr-footer.md` and edit. Appended to every PR body, separated by `---`. Supports `{{model}}` placeholder (replaced with the current model name at submission time).
 
