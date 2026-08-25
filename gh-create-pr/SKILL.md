@@ -17,11 +17,12 @@ Create GitHub pull request(s) from the current branch. If this session touched m
 6. **Create the PR**: Use `gh pr create` with `--title`, `--body`, and `--web` (opens the browser with the PR pre-filled for editing). Do not use `--edit` (opens a terminal editor, unreliable).
    - A concise title (under 70 characters)
    - Body: for trivial PRs (single commit, simple change), a few plain-text sentences covering what, why, and how it was tested. For non-trivial PRs (multi-commit, multi-file, or complex changes), use three sections: `## What`, `## Why`, `## Tested`. Use bullet lists when listing multiple changes or test steps. Keep each section concise; reviewers read the diff for details.
+     - Size the body to the change's consequence, not to the work behind it: a comment-only fix stays trivial however much investigation established it, while a one-line change to a widely-instantiated module is not.
+     - Lead with what the change does for the reviewer rather than the method that found it, and leave evidence, log excerpts and ruled-out hypotheses in the plan issue.
    - Link to the plan issue only if it is in the same repo as the PR. Do not link to plan issues in other repos.
    - Do not set reviewers or labels.
    - **Footer**: Check for `~/.claude/skills/gh-create-pr/pr-footer.md`. If it exists, append its content to the PR body, separated by `---`. Replace `{{model}}` with the full model slug including version and variant (e.g. "Claude Opus 4.8", "GPT-5.6 Sol").
-7. **Post-creation**: After the PR is created:
-   - If creating PRs across multiple repos, cross-link them in each PR description (e.g. "Related: owner/other-repo#N"). Do NOT cross-link from a public repo to a non-public repo.
+7. **Post-creation**: If creating PRs across multiple repos, cross-link them in each PR description (e.g. "Related: owner/other-repo#N"). Do NOT cross-link from a public repo to a non-public repo.
 
 Rules:
 - Never create a PR without pushing the branch first.

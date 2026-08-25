@@ -1,7 +1,7 @@
 ---
 name: gh-update-plan
 description: Update a GitHub plan issue with progress. Use when planning a task, or when the user tells you to "update the github plan issue".
-argument-hint: "[owner/repo#number] [--local] [--preview]"
+argument-hint: "[owner/repo#number] [--local] [--preview] [--sessions-only]"
 allowed-tools: Bash, Read, Write, Edit
 ---
 
@@ -23,9 +23,11 @@ By default, always fetch the latest from GitHub before making changes. Use `--lo
 
 **`--preview` mode**: Prepare all changes in temp files but do not upload. After steps 1-12, show the diff between the fetched files and the modified temp files (e.g. `diff <fetched> <modified>` for each changed file). For new comments, show the full content. Wait for the user to approve before uploading. The user may ask for edits before approving.
 
+**`--sessions-only`**: Only run step 11 (Agent sessions table) and update the session comment heading (step 12) if one exists for this session. Skip all other steps. Useful for registering a session without a full plan update.
+
 Never @mention other users in plan issues or comments.
 
-Update the GitHub issue $ARGUMENTS (issue URL or `owner/repo#number`). If no argument is given, use the issue referenced earlier in this conversation. If no issue can be determined, ask the user.
+Update the GitHub issue $ARGUMENTS (issue URL or `owner/repo#number`). If no argument is given, use the issue referenced earlier in this conversation. If no issue can be determined, ask the user. When the issue was not given as an explicit argument, verify it is a real plan issue (has structural comments like Steps or Design) before proceeding. If it does not look like a plan issue, stop and ask the user to confirm.
 
 If a durable-memory CLI is configured, query it here with the task's distinctive terms before updating. See the memory tool's own integration doc for mechanics.
 
@@ -34,7 +36,7 @@ If a durable-memory CLI is configured, query it here with the task's distinctive
    - Convert plain step lists to checkboxes (`- [ ]` / `- [x]`)
    - Add missing section headings (Description, Steps, Links)
    - If there is no diagram in either the issue body or comments, and the work would benefit from one, add a diagram in a separate comment (Mermaid, three sentence max caption, no "Caption:" prefix). Pick the right type: `sequenceDiagram` for temporal flow, `flowchart` with `subgraph` + `classDef` for static structure
-3. If the design approach has changed or new key decisions were made, update the **Design** comment (or the body for old-format issues that have the how in the body). Omit raw exploration; only include conclusions. Two guardrails against bloat:
+3. If the design approach has changed or new key decisions were made, update the **Design** comment (or the body for old-format issues that have the how in the body). The Design comment is the chosen approach only. Rejected alternatives belong in standalone comments (`## Considered: ...`, `## Decision: ...`). Omit raw exploration; only include conclusions. Two guardrails against bloat:
    - **Don't restate the design doc.** If a rule or decision is already written in the canonical design doc, the Design comment should reference it ("per design doc, Format section"), not repeat it. The comment's job is implementation bindings and decisions that go beyond the doc.
    - **One paragraph per decision, max.** State the binding and the key constraint; put worked examples, rationale, and edge cases in the design doc or a standalone finding comment, not inline.
    - **Keep comments scannable.** Avoid walls of text; break content with lists. For work tracked in other issues, use a bulleted `owner/repo#N -- short description` list rather than restating each issue's rationale in prose.
@@ -45,7 +47,7 @@ If a durable-memory CLI is configured, query it here with the task's distinctive
 8. If useful commands for testing or verifying the work were discovered during this session, add or update a **Useful commands** comment (separate from the issue body). If such a comment already exists, edit it rather than creating a new one.
 9. **PRs** (do not skip): find or create a **PRs** comment (separate from the issue body) with a table: `| PR | What | Agent session |`. PR column: `org/repo#N` as a link. What column: brief description. Agent session column: the name of the session running this gh-update-plan invocation.
 10. Review existing comments for outdated or incorrect information. Own comments: rewrite to state the correct information only (no strikethrough or revision notes - plan issues are current state, not history). Others' comments: reply with the correction.
-11. **Agent sessions**: Find or create an **Agent sessions** comment with a table: `| Session | Directory | Model | Last used | ID |`. Add a row for this session. Always use backtick code formatting for Directory and ID values. Replace the user's home directory with `~` in the Directory column. Get the session name from conversation context (e.g. a system reminder indicating the session was named). Use the full model slug including version and variant. Use the **full session name** in this table; the shortened form (dropping everything before the first ` - `) is only for the PRs table. Set Last used to today's date (YYYY-MM-DD). If this session ID already has a row, update it. Do not duplicate rows.
+11. **Agent sessions**: Find or create an **Agent sessions** comment with a table: `| Session | Directory | Model | Last used | ID |`. Add a row for this session. Always use backtick code formatting for Directory and ID values. Replace the user's home directory with `~` in the Directory column. Use the full model slug including version and variant. Use the **full session name** in this table; the shortened form (dropping everything before the first ` - `) is only for the PRs table. Set Last used to today's date (YYYY-MM-DD). If this session ID already has a row, update it. Do not duplicate rows.
 12. **Important**: session comments (`### Session:`) are compressed into a single Session Log by `gh-close-plan`. Do NOT put design decisions, gotchas, or important context into session comments. Those belong in the **Design** comment (step 3) or as standalone findings (see below).
 
     Find or create a comment with heading `### Session: <session name>` (use the session name from step 11, not the date). If this session already has a comment (match by session name), update it rather than creating a new one. This is a lightweight log entry: what was attempted, open questions, surprises. Do not list commits, PRs, or implementation details.

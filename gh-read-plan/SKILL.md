@@ -14,7 +14,6 @@ When reading the issue, check both the body and comments for content. Steps may 
  * a diagram -- in the body or a Diagram comment
  * links to relevant documentation, code, resources, and related issues
  * a list of prerequisites, and if so, ask the user if those have been completed
- * a list of git commits
  * a link to one or more pull requests -- if so, read their diffs to understand what has already been implemented
 
 Try to verify, from the comments and pull requests, which steps have been completed, and which are still pending.
