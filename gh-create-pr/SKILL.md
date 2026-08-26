@@ -19,6 +19,7 @@ Create GitHub pull request(s) from the current branch. If this session touched m
    - Body: for trivial PRs (single commit, simple change), a few plain-text sentences covering what, why, and how it was tested. For non-trivial PRs (multi-commit, multi-file, or complex changes), use three sections: `## What`, `## Why`, `## Tested`. Use bullet lists when listing multiple changes or test steps. Keep each section concise; reviewers read the diff for details.
      - Size the body to the change's consequence, not to the work behind it: a comment-only fix stays trivial however much investigation established it, while a one-line change to a widely-instantiated module is not.
      - Lead with what the change does for the reviewer rather than the method that found it, and leave evidence, log excerpts and ruled-out hypotheses in the plan issue.
+     - Do not restate what the commit messages already say. The PR body adds the overarching why and how it was tested; the per-commit details are in the commits.
    - Link to the plan issue only if it is in the same repo as the PR. Do not link to plan issues in other repos.
    - Do not set reviewers or labels.
    - **Footer**: Check for `~/.claude/skills/gh-create-pr/pr-footer.md`. If it exists, append its content to the PR body, separated by `---`. Replace `{{model}}` with the full model slug including version and variant (e.g. "Claude Opus 4.8", "GPT-5.6 Sol").
