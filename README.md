@@ -1,10 +1,10 @@
 # claude-plan-skills
 
-Custom [Claude Code](https://claude.ai/code) skills for managing work across sessions using GitHub issues as execution plans.
+Custom skills for managing work across sessions using GitHub issues as execution plans. Works with Claude Code, Codex, and other agents that support skills.
 
 ## The problem
 
-Claude Code starts fresh every session. Complex tasks that span multiple conversations lose their thread: what's been done, what decisions were made, what's still pending.
+An AI coding agent loses context between sessions. Complex tasks that span multiple conversations lose their thread: what's been done, what decisions were made, what's still pending.
 
 ## The solution
 
@@ -24,13 +24,9 @@ A new conversation can pick up exactly where the last one left off by reading th
 
 ## Installation
 
-Copy the skill directories into your Claude Code skills folder:
+Clone and symlink:
 
-```bash
-cp -r gh-create-plan gh-read-plan gh-implement-plan gh-update-plan gh-close-plan gh-create-pr handover ~/.claude/skills/
-```
-
-Or clone and symlink (recommended — picks up new skills on `git pull`):
+### Claude Code
 
 ```bash
 git clone https://github.com/gjoranv/claude-plan-skills ~/git/claude-plan-skills
@@ -41,10 +37,10 @@ done
 
 ### Codex
 
-These skills are agent-neutral and work with Codex. Copy them to the Codex skills folder:
-
 ```bash
-cp -r gh-create-plan gh-read-plan gh-implement-plan gh-update-plan gh-close-plan gh-create-pr handover ~/.codex/skills/
+for d in ~/git/claude-plan-skills/*/SKILL.md; do
+  ln -sfn "$(dirname "$d")" ~/.codex/skills/
+done
 ```
 
 ## Usage
@@ -78,7 +74,6 @@ Both fields are optional. If only one is set, it's used by default. `/gh-create-
 
 ## Requirements
 
-- [Claude Code](https://claude.ai/code)
 - [GitHub CLI (`gh`)](https://cli.github.com/) authenticated
 
 ## Related
