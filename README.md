@@ -19,6 +19,7 @@ Use a GitHub issue as a persistent plan:
 | `/gh-close-plan` | Consolidates session logs, captures learnings, finalizes PRs table, and closes |
 | `/gh-create-pr` | Creates a PR using `--web` to open the browser with title and body pre-filled for editing |
 | `/handover` | Prepares a handover prompt for continuing work in a new session |
+| `/prompt-session` | Generates a concise prompt for another agent session, tailored to a role (architect, implementer, reviewer, etc.) |
 
 A new conversation can pick up exactly where the last one left off by reading the issue with `/gh-read-plan`, or by pasting a `/handover` prompt from the previous session.
 
@@ -53,6 +54,7 @@ done
 /gh-close-plan                    # Finalize and close the plan
 /gh-create-pr                     # Create a PR, opens browser for editing
 /handover                         # Prepare a handover for a new session
+/prompt-session implementer       # Generate a prompt for another session, by role
 ```
 
 After creating an issue, the skills accept a URL or `owner/repo#number`. If a plan issue was referenced earlier in the conversation, the argument can be omitted.
@@ -78,5 +80,6 @@ Both fields are optional. If only one is set, it's used by default. `/gh-create-
 
 ## Related
 
+- [claude-review-skills](https://github.com/gjoranv/claude-review-skills) - skills for the PR review cycle; `/prompt-session reviewer` points at its `/gh-review-pr`
 - [Claude Code Doesn't Remember. Here's How I Fixed That.](https://medium.com/@gjoranv/claude-code-doesnt-remember-here-s-how-i-fixed-that-0992cbeb6d37) - how these skills work and why GitHub issues are the persistence layer
 - [I Don't Start With a Plan. Here's What I Do First.](https://medium.com/@gjoranv/i-dont-start-with-a-plan-here-s-what-i-do-first-9f6192177298) - the investigation phase before creating a plan, and the handover skill for continuing across sessions
