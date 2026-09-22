@@ -43,7 +43,7 @@ Before creating the plan, ask the user if there are related repos with similar i
    Short caption (three sentences max, no "Caption:" prefix).
 4. **Links**: Links to relevant documentation, code, resources, and related issues. Do not add PRs here.
 5. **Useful commands**: Added by `gh-update-plan` when useful commands are discovered. Not created by `gh-create-plan`.
-6. **Agent sessions**: A table `| Session | Directory | Model | Last used | ID |` with this session as the first row. Set Last used to today's date (YYYY-MM-DD). Use backtick code formatting for Directory and ID. Replace the user's home directory with `~` in the Directory column.
+6. **Agent sessions**: A table `| Session | Directory | Model | Last used | ID |` with this session as the first row. Set Last used to today's date (YYYY-MM-DD). Use backtick code formatting for Directory and ID. Replace the user's home directory with `~` in the Directory column. Get the session name from the system reminder in Claude Code (look for "The user named this session"), or from `~/.codex/session_index.jsonl` in Codex (see `gh-update-plan` for the lookup); if not found, use "unnamed". Get the session ID from `$CLAUDE_CODE_SESSION_ID` (Claude Code) or `$CODEX_THREAD_ID` (Codex). Model: never guess. In Claude Code, use the model from the system prompt. In Codex, query `~/.codex/state_5.sqlite`: `SELECT model FROM threads WHERE id = '$CODEX_THREAD_ID'`. Use the model family, version, and variant without extras (e.g. "Opus 4.8", "Fable 5", "GPT-5.6 Sol").
 7. **PRs**: Added by `gh-update-plan`. Table: `| PR | What | Agent session |`.
 
 On create, add comments 1-4 and 6. Comments 5, 7 are added later by `gh-update-plan`.
