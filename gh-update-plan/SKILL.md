@@ -9,8 +9,8 @@ Exit plan mode before executing this skill. You must actually run `gh` commands 
 
 **Workflow for editing issue bodies and comments:**
 1. Use a stable temp directory per issue: `/tmp/plan-update-OWNER-REPO-NUMBER`. This allows reuse across invocations.
-2. **Fetch or reuse**: If `--local` is passed and the temp directory already has files from a previous invocation, skip fetching and reuse the cached files. Otherwise, **always fetch fresh content** from GitHub using `gh api` and overwrite any existing temp files. Use the Write tool to save files. Do NOT use shell redirects (`>`).
-3. Use the Read and Edit tools to modify the temp files (not shell commands like sed/awk).
+2. **Fetch or reuse**: If `--local` is passed and the temp directory already has files from a previous invocation, skip fetching and reuse the cached files. Otherwise, **always fetch fresh content** from GitHub using `gh api` and overwrite any existing temp files. In Claude Code, prefer the Write tool. Do not embed fetched content directly in shell arguments.
+3. Modify the temp files with the agent's normal file-edit mechanism. In Claude Code, prefer the Read and Edit tools. Avoid ad hoc `sed`/`awk` rewrites.
 4. Upload using `--input` with `jq` to properly JSON-encode the content:
 
 - Edit issue body: `jq -Rs '{body: .}' <tempdir>/body.md | gh api repos/OWNER/REPO/issues/NUMBER -X PATCH --input -`

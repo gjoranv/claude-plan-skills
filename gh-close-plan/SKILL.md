@@ -11,8 +11,8 @@ Close the GitHub issue $ARGUMENTS (issue URL or `owner/repo#number`). If no argu
 
 **Workflow for editing issue bodies and comments:**
 1. Create a unique temp directory: `mktemp -d /tmp/plan-close-XXXXX`
-2. Fetch content from GitHub using `gh api` and capture the output. Use the Write tool to save it to files in the temp directory (e.g. `body.md`, `comment-COMMENTID.md`). Do NOT use shell redirects (`>`) to write files, as this triggers permission prompts.
-3. Use the Read and Edit tools to modify the temp files (not shell commands like sed/awk).
+2. Fetch content from GitHub using `gh api` and save it to files in the temp directory (e.g. `body.md`, `comment-COMMENTID.md`). In Claude Code, prefer the Write tool. Do not embed fetched content directly in shell arguments.
+3. Modify the temp files with the agent's normal file-edit mechanism. In Claude Code, prefer the Read and Edit tools. Avoid ad hoc `sed`/`awk` rewrites.
 4. Upload using `--input` with `jq` to properly JSON-encode the content:
 
 - Edit issue body: `jq -Rs '{body: .}' <tempdir>/body.md | gh api repos/OWNER/REPO/issues/NUMBER -X PATCH --input -`
