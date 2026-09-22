@@ -103,8 +103,10 @@ Print the prompt between plain-text fences so the user can copy-paste verbatim:
 ---END PROMPT---
 ```
 
-Get this session's name from conversation context (e.g. a system reminder indicating the session was named). If not
-found, use "unnamed".
+Get this session's name from the agent's own source. In Claude Code, read the system reminder (look for "The user named
+this session"). In Codex, look it up:
+`jq -sr --arg id "$CODEX_THREAD_ID" '[.[] | select(.id == $id) | .thread_name] | last // "unnamed"' ~/.codex/session_index.jsonl`.
+Only if neither source yields a name, use "unnamed".
 
 Keep it short. Terse direct sentences, no bullet-point sprawl. If the task is simple, 10 lines is ideal; never exceed
 ~30 lines unless the user has provided a lot of unique context that can't be referenced by a plan issue.
