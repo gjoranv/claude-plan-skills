@@ -3,6 +3,7 @@ name: handover
 description: Prepare a handover for continuing work in a new session. Use when the user asks to "hand over", "prepare handover", "wrap up for a new session", or "context dump".
 argument-hint: "[plan-issue]"
 allowed-tools: Bash, Read
+disable-model-invocation: true
 ---
 
 Prepare everything needed for a new conversation to continue the current work seamlessly.
