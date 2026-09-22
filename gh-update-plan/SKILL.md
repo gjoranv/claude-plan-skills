@@ -55,7 +55,12 @@ If a durable-memory CLI is configured, query it here with the task's distinctive
    - Fall back to "unnamed" if no source has a name. Use the **full session name** in this table; the shortened form (dropping everything before the first ` - `) is only for the PRs table. Set Last used to today's date (YYYY-MM-DD). If this session ID already has a row, update it (the name, date, or other fields may have changed). Do not duplicate rows.
 12. **Important**: session comments (`### Session:`) are compressed into a single Session Log by `gh-close-plan`. Do NOT put design decisions, gotchas, or important context into session comments. Those belong in the **Design** comment (step 3) or as standalone findings (see below).
 
-    Find or create a comment with heading `### Session: <session name>` (use the session name from step 11, not the date). If this session already has a comment (match by session name), update it rather than creating a new one. This is a lightweight log entry: what was attempted, open questions, surprises. Do not list commits, PRs, or implementation details.
+    Find or create a comment with heading `### Session: <session name>` (the session name from step 11; the date goes in the body, not the heading). If this session already has a comment (match by session name), update it rather than creating a new one.
+
+    Write the body so a reader who was not in the session can tell what happened and what is left:
+    - First line: the date, or the date range for a session spanning several days (`2026-09-22`, or `2026-09-13 to 2026-09-22`). `gh-close-plan` groups the Session Log by date and needs it.
+    - Then short bullets: what was attempted and its outcome, what was learned or surprising, open questions, and what remains. One line per bullet. Several bullets are expected; a two-sentence summary is too little to be useful later.
+    - Do not list commits, PRs, or implementation details; the PRs table and the diffs hold those.
 
     If a session produced standalone findings worth preserving independently (research, design decisions, verification results), add them as separate comments with descriptive headings (e.g. `## Research: ...`, `## Considered: ...`). These are not prefixed with `Session:` and will be kept as-is by `gh-close-plan`. Finding style: state each verified fact plainly (including positive ones), then the recommendation. No mechanism walkthroughs, no loaded adjectives ("only *rare*", "*effectively permanent*"). When later work in the same session refines a finding, update the finding comment in the same pass.
 
