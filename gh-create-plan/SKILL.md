@@ -14,7 +14,7 @@ Create a GitHub issue containing the detailed plan for the work in this conversa
 - **Personal**: the `personalRepo` from config.
 - **Company-shareable** (team plans and records): the `teamRepo` from config. A plan opened here distills into a team record on close.
 
-**Guard.** Plan issues should only be created in private or internal repos.
+**Guard.** Plan issues must only be created in private or internal repos. NEVER create them in public repos. If the user provides a public repo, warn them and ask for the correct location.
 
 Derive a concise issue title from the conversation context. Ask the user if unclear.
 
@@ -22,7 +22,7 @@ The GitHub issue should be self-contained so that a new conversation can pick up
 
 Think as a software architect first. Before writing steps, consider: What are the key abstractions? Where should boundaries be? What's the simplest design that solves the problem? What will be hard to change later? Let these decisions shape the plan structure.
 
-When a design splits work across layers (e.g. "resolve X in layer A, resolve Y in layer B"), verify what context is available at each layer by reading the actual code. Do not assume context is unavailable without checking.
+When a design splits work across layers (e.g. "resolve X in layer A, resolve Y in layer B"), verify what context is available at each layer by reading the actual code. Do not assume context is unavailable without checking. Plans that make wrong assumptions about layer boundaries lead to unnecessary complexity (e.g. partially-resolved intermediate states).
 
 If a durable-memory CLI is configured, query it with the task's distinctive terms before writing the plan. See the memory tool's own integration doc for mechanics.
 
