@@ -28,6 +28,8 @@ otherwise. Do NOT restate:
   `/gh-read-plan owner/repo#N` at the start. Do not summarize the plan.
 - **Skill to invoke**: if a ready-made skill covers the target's job (see roles below), instruct the target to invoke
   it. Do NOT restate the skill's rules in the generated prompt; the target loads those itself.
+- **Recall**: if a durable-memory recall skill is configured, instruct the target to run it on the task's own terms
+  before starting non-trivial work. Skip for trivial tasks: secretary updates, formatting fixes, mechanical edits.
 - **Pointers**: branch, worktree path, key file paths, sibling checkouts to avoid
 - **Hard constraints**: scope boundaries (no push, no PR create, no amend, no changes outside X, don't delete worktree,
   etc.)
