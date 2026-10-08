@@ -50,6 +50,8 @@ Never embed content directly in shell arguments or use `-f body=@file` (it uploa
    - Explain every term; a reader who meets it here for the first time must be able to understand it from the record.
    - Write for a reader who was not part of the work and has only the team's repositories and the artifacts they link.
 
+   **Land it the store's way.** Once the record and its registration are written, land them as the store's "Landing a record" section says. If that section is missing, stop and report; do not choose a landing method yourself.
+
    **Close-time breadcrumb**: if this plan is a child of a parent plan that has a team record, and the store supports linking a follow-up record to its parent, propose that link on the parent's record in the form the store defines. Never rewrite a landed record's body; skipping the link loses nothing (the follow-up is independently findable).
 
    Apply confirmed items. If the user says nothing to capture, move on.
