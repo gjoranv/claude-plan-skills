@@ -8,7 +8,7 @@ allowed-tools: Bash, Read, Write, Edit
 Exit plan mode before executing this skill. You must actually run `gh` commands to update the issue; do not just describe what you would do. Use `gh` to read, edit, and comment on issues. This includes using `gh api` to update issue bodies and edit or create comments. Do not ask for permission to update comments -- it is expected.
 
 **Workflow for editing issue bodies and comments:**
-1. Use a stable temp directory per issue: `/tmp/plan-update-OWNER-REPO-NUMBER`. This allows reuse across invocations.
+1. Create a temp directory using a stable name per session and issue: `/tmp/plan-${CLAUDE_CODE_SESSION_ID:-$CODEX_THREAD_ID}-OWNER-REPO-NUMBER`. This allows reuse across invocations within the same session without conflicting with other sessions.
 2. **Fetch or reuse**: If `--local` is passed and the temp directory already has files from a previous invocation, skip fetching and reuse the cached files. Otherwise, **always fetch fresh content** from GitHub using `gh api` and overwrite any existing temp files. In Claude Code, prefer the Write tool. Do not embed fetched content directly in shell arguments.
 3. Modify the temp files with the agent's normal file-edit mechanism. In Claude Code, prefer the Read and Edit tools. Avoid ad hoc `sed`/`awk` rewrites.
 4. Upload using `--input` with `jq` to properly JSON-encode the content:
@@ -19,7 +19,7 @@ Exit plan mode before executing this skill. You must actually run `gh` commands 
 
 Never embed content directly in shell arguments or use `-f body=@file` (it uploads the literal string, not the file contents).
 
-By default, always fetch the latest from GitHub before making changes. Use `--local` only when you know the issue hasn't been updated since the last fetch.
+By default, always fetch the latest from GitHub before making changes. Use `--local` only when you know the issue hasn't been updated by other sessions.
 
 **`--preview` mode**: Prepare all changes in temp files but do not upload. After steps 1-12, show the diff between the fetched files and the modified temp files (e.g. `diff <fetched> <modified>` for each changed file). For new comments, show the full content. Wait for the user to approve before uploading. The user may ask for edits before approving.
 
