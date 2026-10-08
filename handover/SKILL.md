@@ -12,7 +12,7 @@ Prepare everything needed for a new conversation to continue the current work se
    - Current repo and branch
    - Uncommitted changes (`git status`, `git diff --stat`)
    - Recent commits on this branch
-   - The plan issue (from argument, or ask the user)
+   - The plan issue (from argument, or the one referenced earlier in this conversation, or ask the user)
 2. **Summarize the session**: What was done, key decisions made, what's still in progress, any blockers or open questions.
 3. **Offer to persist state** before handing over:
    - Update the plan issue (`/gh-update-plan`)
