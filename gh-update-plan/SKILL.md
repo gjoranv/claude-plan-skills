@@ -52,13 +52,13 @@ If a durable-memory CLI is configured, query it here with the task's distinctive
    - **Codex**: session ID from `$CODEX_THREAD_ID`. Session name from `~/.codex/session_index.jsonl`: `jq -sr --arg id "$CODEX_THREAD_ID" '[.[] | select(.id == $id) | .thread_name] | last // "unnamed"' ~/.codex/session_index.jsonl`.
    - **Other agents**: use the agent's own session identifier and name if it exposes them; otherwise ask the user.
    - **Model**: never guess. In Claude Code, use the model from the system prompt. In Codex, query `~/.codex/state_5.sqlite`: `SELECT model FROM threads WHERE id = '$CODEX_THREAD_ID'`. Use the model family, version, and variant without extras like context window size (e.g. "Opus 4.8", "Fable 5", "GPT-5.6 Sol").
-   - Fall back to "unnamed" if no source has a name. Use the **full session name** in this table; the shortened form (dropping everything before the first ` - `) is only for the PRs table. Set Last used to today's date (YYYY-MM-DD). If this session ID already has a row, update it (the name, date, or other fields may have changed). Do not duplicate rows.
+   - Fall back to "unnamed" if no source has a name. Use the **full session name** in this table; the shortened form (dropping everything before the first ` - `) is only for the PRs table. Set Last used (YYYY-MM-DD) to the most recent date on which this session did actual work on the plan (code, review, investigation, writing), not the date of this plan update when that is later. A session resumed only to update the plan keeps its earlier date. If this session ID already has a row, update it (the name, date, or other fields may have changed). Do not duplicate rows.
 12. **Important**: session comments (`### Session:`) are compressed into a single Session Log by `gh-close-plan`. Do NOT put design decisions, gotchas, or important context into session comments. Those belong in the **Design** comment (step 3) or as standalone findings (see below).
 
     Find or create a comment with heading `### Session: <session name>` (the session name from step 11; the date goes in the body, not the heading). If this session already has a comment (match by session name), update it rather than creating a new one.
 
     Write the body so a reader who was not in the session can tell what happened and what is left:
-    - First line: the date, or the date range for a session spanning several days (`2026-09-22`, or `2026-09-13 to 2026-09-22`). `gh-close-plan` groups the Session Log by date and needs it.
+    - First line: the date, or the date range for a session spanning several days (`2026-09-22`, or `2026-09-13 to 2026-09-22`). The end date is the last date of actual work, as for Last used in step 11, not the date of this update. `gh-close-plan` groups the Session Log by date and needs it.
     - Then short bullets: what was attempted and its outcome, what was learned or surprising, open questions, and what remains. One line per bullet. Several bullets are expected; a two-sentence summary is too little to be useful later.
     - Do not list commits, PRs, or implementation details; the PRs table and the diffs hold those.
 
