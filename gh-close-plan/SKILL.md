@@ -34,7 +34,23 @@ Never embed content directly in shell arguments or use `-f body=@file` (it uploa
    - **Repo docs** (`docs/` or similar): architecture insights, design rationale
    - **Memory**: cross-project patterns, user preferences
 
-   For a **company-shareable plan** (opened in the `teamRepo` from `~/.claude/skills/plan-config.json`), distill a frozen team **record** summarizing what was decided and why, so the closed plan carries no unique living knowledge and becomes safely archival. One record per independently citable outcome (usually one per plan). Split only when different consumers would cite different parts; never split by timeline or implementation phase. Skip this step if no `teamRepo` is configured or the plan is not in that repo.
+   For a **company-shareable plan** (opened in the `teamRepo` from `~/.claude/skills/plan-config.json`), distill a frozen team **record** summarizing what was decided and why, so the closed plan carries no unique living knowledge and becomes safely archival. One record per independently citable outcome (usually one per plan). Split only when different consumers would cite different parts; never split by timeline or implementation phase. Write no record if no `teamRepo` is configured or the plan is not in that repo; the capture of learnings above still applies.
+
+   **Check the records checkout before writing** anything into it. Each check that fails stops the record step and leaves the checkout exactly as found; report the reason and ask the user how to proceed.
+   1. `git fetch` the store's remote.
+   2. Stop if the remote's default branch cannot be determined (`git symbolic-ref refs/remotes/origin/HEAD`, or `git remote show origin`).
+   3. Stop if the checkout is on any branch other than that default branch.
+   4. Stop on any uncommitted change, staged or not (`git status --porcelain` must be empty).
+   5. Fast-forward to the remote default branch (`git merge --ff-only`); stop if the branches have diverged.
+
+   **Follow the store's own standard.** Read the store's `index.md` for the record format, register the record where the store lists them, and make the finished record satisfy the store's "Writing a record" section. If `index.md` exists but has no "Writing a record" section, write by the procedure below and propose adding that section to the store. If `index.md` is missing, stop: the record format itself is then unknown.
+
+   The procedure while writing:
+   - Verify each fact against the artifact it came from (PR, commit, document, test run) before stating it.
+   - Explain every term; a reader who meets it here for the first time must be able to understand it from the record.
+   - Write for a reader who was not part of the work and has only the team's repositories and the artifacts they link.
+
+   **Close-time breadcrumb**: if this plan is a child of a parent plan that has a team record, and the store supports linking a follow-up record to its parent, propose that link on the parent's record in the form the store defines. Never rewrite a landed record's body; skipping the link loses nothing (the follow-up is independently findable).
 
    Apply confirmed items. If the user says nothing to capture, move on.
 7. Add a closing comment summarizing:
