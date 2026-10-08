@@ -13,7 +13,7 @@ Implement the plan from GitHub issue $ARGUMENTS (issue URL or `owner/repo#number
 4. **For each step**, in order:
    a. If a durable-memory CLI is configured, query it with the step's distinctive terms before implementing. See the memory tool's own integration doc for mechanics.
    b. Implement the change.
-   c. Stage and commit the changes with a descriptive commit message. Do not reference the issue.
+   c. Stage and commit the changes with a descriptive commit message. Do not reference the issue. Write the message for a reader who has only this repo and was not in this session: no session-local shorthand, and no references to the plan, other repos, other copies of a file, or tooling that does not exist in this repo. Reread it as that reader before committing.
    d. Check off the step (`- [x]`) on the issue. Update wherever the steps are found (Steps comment or body).
 5. **After all steps are complete**, present a summary of what was done for each step (files changed, key decisions). Tell the user to review the commits and push when ready.
 
