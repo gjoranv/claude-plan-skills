@@ -18,9 +18,12 @@ Create GitHub pull request(s) from the current branch. If this session touched m
 7. **Create the PR**: Always use `gh pr create --web --title <title> --body <body>`. The `--web` flag is mandatory; it opens the browser so the user can review and edit before submitting. Do not use `--edit` (terminal editor, unreliable). Do not omit `--web`.
    - A concise title (under 70 characters)
    - Body: for trivial PRs (single commit, simple change), a few plain-text sentences covering what, why, and how it was tested. For non-trivial PRs (multi-commit, multi-file, or complex changes), use three sections: `## What`, `## Why`, `## Tested`. Use bullet lists when listing multiple changes or test steps. Keep each section concise; reviewers read the diff for details.
+     - For a long description, start with a brief **TL;DR** stating the change and its purpose.
+     - `## Tested` holds only what has already been verified: tests run, a plan reviewed, a local deploy. Checks that can only happen once the change is merged or applied (a deploy, a `tofu apply`, a rollout) go in a separate `## Verify after merge` section, each saying what to look at; for infrastructure that takes effect on apply, say so in the check. Leave that section out when there is nothing to verify later.
      - Size the body to the change's consequence, not to the work behind it: a comment-only fix stays trivial however much investigation established it, while a one-line change to a widely-instantiated module is not.
      - Lead with what the change does for the reviewer rather than the method that found it, and leave evidence, log excerpts and ruled-out hypotheses in the plan issue.
      - Do not restate what the commit messages already say. The PR body adds the overarching why and how it was tested; the per-commit details are in the commits.
+     - For a large PR whose commits form a useful review sequence, add a line just before `## What`, after any TL;DR, suggesting a commit-by-commit review.
    - Link to the plan issue only if it is in the same repo as the PR. Never link to a plan issue in a personal or private repo from a PR in another repo. This applies to the PR description, comments, and commit messages.
    - For PRs to public repos: never reference internal issue trackers or internal URLs.
    - Do not set reviewers or labels.
