@@ -35,7 +35,7 @@ Never embed content directly in shell arguments or use `-f body=@file` (it uploa
    - **Repo docs** (`docs/` or similar): architecture insights, design rationale
    - **Memory**: cross-project patterns, user preferences
 
-   For a **company-shareable plan** (opened in the `teamRepo` from `~/.claude/skills/plan-config.json`), distill a frozen team **record** summarizing what was decided and why, so the closed plan carries no unique living knowledge and becomes safely archival. One record per independently citable outcome (usually one per plan). Split only when different consumers would cite different parts; never split by timeline or implementation phase. Write no record if no `teamRepo` is configured or the plan is not in that repo; the capture of learnings above still applies.
+   For a **company-shareable plan** (opened in the `teamRepo` from `~/.claude/skills/plan-config.json`), distill a frozen team **record** summarizing what was decided and why, recording this plan issue in the provenance field the store defines, so the closed plan carries no unique living knowledge and becomes safely archival. One record per independently citable outcome (usually one per plan). Split only when different consumers would cite different parts; never split by timeline or implementation phase. Write no record if no `teamRepo` is configured or the plan is not in that repo; the capture of learnings above still applies.
 
    **Check the records checkout before writing** anything into it. Each check that fails stops the record step and leaves the checkout exactly as found; report the reason and ask the user how to proceed.
    1. `git fetch` the store's remote.
@@ -46,10 +46,13 @@ Never embed content directly in shell arguments or use `-f body=@file` (it uploa
 
    **Follow the store's own standard.** Read the store's `index.md` for the record format, register the record where the store lists them, and make the finished record satisfy the store's "Writing a record" section. If `index.md` exists but has no "Writing a record" section, write by the procedure below and propose adding that section to the store. If `index.md` is missing, stop: the record format itself is then unknown.
 
+   Before landing, check the finished record and its catalog registration against the store's `index.md`.
+
    The procedure while writing:
    - Verify each fact against the artifact it came from (PR, commit, document, test run) before stating it.
    - Explain every term; a reader who meets it here for the first time must be able to understand it from the record.
    - Write for a reader who was not part of the work and has only the team's repositories and the artifacts they link.
+   - If a durable-memory CLI is configured, run a diagnostic query for the new record and inspect the title, description, and sources it returns before landing it.
 
    **Land it the store's way.** Once the record and its registration are written, land them as the store's "Landing a record" section says. If that section is missing, stop and report; do not choose a landing method yourself.
 
