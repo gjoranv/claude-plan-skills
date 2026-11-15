@@ -4,7 +4,7 @@ description: Create a GitHub PR from the current branch. Use when the user asks 
 allowed-tools: Bash
 ---
 
-Create GitHub pull request(s) from the current branch. If this session touched multiple repos (check conversation context, plan issue, or ask the user), create a PR in each repo. Run steps 1-8 for each repo in sequence.
+Create GitHub pull request(s) from the current branch. If this session touched multiple repos (check conversation context, plan issue, or ask the user), create a PR in each repo. Run steps 1-7 for each repo in sequence.
 
 1. **Check state**: Run `git status` and `git branch --show-current`.
 2. **Prepare a branch**:
@@ -26,9 +26,10 @@ Create GitHub pull request(s) from the current branch. If this session touched m
      - For a large PR whose commits form a useful review sequence, add a line just before `## What`, after any TL;DR, suggesting a commit-by-commit review.
    - Link to the plan issue only if it is in the same repo as the PR. Never link to a plan issue in a personal or private repo from a PR in another repo. This applies to the PR description, comments, and commit messages.
    - For PRs to public repos: never reference internal issue trackers or internal URLs.
-   - Do not set reviewers or labels.
+   - Do not set reviewers or labels when creating the PR; request a Copilot review afterwards when applicable (step 8).
    - **Footer**: Check for `~/.claude/skills/gh-create-pr/pr-footer.md`. If it exists, append its content to the PR body, separated by `---`. Replace `{{model}}` with the full model slug including version and variant (e.g. "Opus 4.8", "GPT-5.6 Sol"). For non-public repos only, append an HTML comment with session metadata after the footer text (invisible in rendered view): `<!-- session: <name> | dir: <directory> | model: <model> | id: <session-id> -->`. Never add this to PRs in open source repos.
-8. **Post-creation**: If creating PRs across multiple repos, cross-link them in each PR description (e.g. "Related: owner/other-repo#N"). Do NOT cross-link from a public repo to a non-public repo.
+8. **Post-creation**: The PR is created in the browser, so first ask the user to say when it is submitted. Then find the PR with `gh pr view --json number,url` on the branch and report its number and URL, so the session knows it exists; if there is none, the form was not submitted, so say so. For a non-trivial PR, ask whether to request a Copilot review before asking anyone for a human review. If yes, run `gh pr edit <NUMBER> --add-reviewer @copilot`.
+   - If creating PRs across multiple repos, cross-link them in each PR description (e.g. "Related: owner/other-repo#N"). Do NOT cross-link from a public repo to a non-public repo.
 
 Rules:
 - Never create a PR without pushing the branch first.
