@@ -9,8 +9,8 @@ Exit plan mode before executing this skill. You must actually run `gh` commands 
 
 **Workflow for editing issue bodies and comments:**
 1. Create a temp directory using a stable name per session and issue: `/tmp/plan-${CLAUDE_CODE_SESSION_ID:-$CODEX_THREAD_ID}-OWNER-REPO-NUMBER`. This allows reuse across invocations within the same session without conflicting with other sessions.
-2. **Fetch or reuse**: If `--local` is passed and the temp directory already has files from a previous invocation, skip fetching and reuse the cached files. Otherwise, **always fetch fresh content** from GitHub using `gh api` and overwrite any existing temp files. In Claude Code, prefer the Write tool. Do not embed fetched content directly in shell arguments.
-3. Modify the temp files with the agent's normal file-edit mechanism. In Claude Code, prefer the Read and Edit tools. Avoid ad hoc `sed`/`awk` rewrites.
+2. **Fetch or reuse**: If `--local` is passed and the temp directory already has files from a previous invocation, skip fetching and reuse the cached files. Otherwise, **always fetch fresh content** from GitHub using `gh api` and redirect it straight into the temp files, overwriting any existing ones (e.g. `gh api repos/OWNER/REPO/issues/comments/COMMENT_ID --jq .body > <tempdir>/comment-COMMENTID.md`). Do not embed fetched content directly in shell arguments or copy it into a file through the session.
+3. Modify the temp files with targeted edits that touch only the lines that change; never rewrite a whole file to change part of it. In Claude Code, prefer the Read and Edit tools. Avoid ad hoc `sed`/`awk` rewrites. Keep large diffs out of the session, whatever the agent: do not print a file or run `diff` on it, and when a change to a comment or the body is large, tell the user which comment it is (e.g. Design, Steps) and summarize the change in a sentence or two instead. `--preview` mode is the exception.
 4. Upload using `--input` with `jq` to properly JSON-encode the content:
 
 - Edit issue body: `jq -Rs '{body: .}' <tempdir>/body.md | gh api repos/OWNER/REPO/issues/NUMBER -X PATCH --input -`
@@ -19,9 +19,16 @@ Exit plan mode before executing this skill. You must actually run `gh` commands 
 
 Never embed content directly in shell arguments or use `-f body=@file` (it uploads the literal string, not the file contents).
 
+**Editing existing bodies and comments**: use [scripts/plan_comments.py](scripts/plan_comments.py) (`python3 <skill-dir>/scripts/plan_comments.py`). It does steps 1, 2 and 4 for existing text, including batches across issues; it does not choose edits or replace the plan-maintenance steps below. Use the commands above for new comments, and as the fallback when the helper cannot run.
+
+- `fetch OWNER/REPO#NUMBER [...]` saves fresh bodies and comments under the session's temp directory, in a `helper/` subdirectory, and prints each editing directory. Each comment's file is named after its first heading (`comment-design.md`, `comment-session-<name>.md`), with `-2` for a repeated heading and the comment ID when there is no heading. Edit `body.md` and these files with targeted changes (step 3). With `--local`, skip `fetch` and keep editing the files already there.
+- `status DIRECTORY [...]` lists pending edits, with each file's comment ID, without printing their contents. `preview DIRECTORY [...]` shows their diffs, for `--preview` mode.
+- `publish DIRECTORY [...]` checks that GitHub still has the fetched text, uploads the edited files, and verifies each by reading it back. GitHub has no multi-comment transaction, so a batch may stop part-way; each completed write is recorded, and running `publish` again finishes the rest.
+- If `publish` reports a concurrent edit, run `rebase DIRECTORY [...]`. It refreshes unedited files and, for each conflicting edit, saves the current GitHub text beside it as `<file>.live`. Merge that text into your edit, delete the `.live` file, and publish again; `publish` refuses while one remains. Never delete the helper's state to get past a conflict.
+
 By default, always fetch the latest from GitHub before making changes. Use `--local` only when you know the issue hasn't been updated by other sessions.
 
-**`--preview` mode**: Prepare all changes in temp files but do not upload. After steps 1-12, show the diff between the fetched files and the modified temp files (e.g. `diff <fetched> <modified>` for each changed file). For new comments, show the full content. Wait for the user to approve before uploading. The user may ask for edits before approving.
+**`--preview` mode**: Prepare all changes in temp files but do not upload. After steps 1-12, show the diff between the fetched files and the modified temp files (the helper's `preview` command, or `diff <fetched> <modified>` for each changed file). For new comments, show the full content. Wait for the user to approve before uploading. The user may ask for edits before approving.
 
 **`--sessions-only`**: Only run step 11 (Agent sessions table) and update the session comment heading (step 12) if one exists for this session. Skip all other steps. Useful for registering a session without a full plan update.
 

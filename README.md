@@ -15,7 +15,7 @@ Use a GitHub issue as a persistent plan:
 | `/gh-create-plan` | Creates a structured GitHub issue with steps, design, diagram, links, and agent sessions as separate comments |
 | `/gh-read-plan` | Reads the issue, identifies completed and pending steps, and briefs the session |
 | `/gh-implement-plan` | Works through steps in order, commits after each step, checks off checkboxes |
-| `/gh-update-plan` | Updates the issue with progress, tracks which agent sessions worked on it. Supports `--preview` (diff before uploading) |
+| `/gh-update-plan` | Updates the issue with progress, tracks which agent sessions worked on it. Edits existing comments through a helper script that refuses to overwrite concurrent edits and verifies each write. Supports `--preview` (diff before uploading) |
 | `/gh-close-plan` | Consolidates session logs, captures learnings, finalizes PRs table, and closes |
 | `/gh-create-pr` | Creates a PR using `--web` to open the browser with title and body pre-filled for editing |
 | `/handover` | Prepares a handover prompt for continuing work in a new session |
@@ -77,6 +77,8 @@ Both fields are optional. If only one is set, it's used by default. `/gh-create-
 ## Requirements
 
 - [GitHub CLI (`gh`)](https://cli.github.com/) authenticated
+- [`jq`](https://jqlang.org/)
+- Python 3, for the `gh-update-plan` helper script
 
 ## Related
 
