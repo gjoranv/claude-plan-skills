@@ -24,18 +24,25 @@ otherwise. Do NOT restate:
 ## What to include
 
 - **One-sentence goal**: what the target is being asked to do
-- **Plan reference**: if there is a plan issue, cite it as `owner/repo#N` and instruct the target to run
-  `/gh-read-plan owner/repo#N` at the start. Do not summarize the plan.
+- **Plan reference** (starting prompts; follow-ups only as below): if there is a plan issue, cite it as `owner/repo#N`
+  and instruct the target to run `/gh-read-plan owner/repo#N` at the start. Do not summarize the plan.
 - **Skill to invoke**: if a ready-made skill covers the target's job (see roles below), instruct the target to invoke
   it. Do NOT restate the skill's rules in the generated prompt; the target loads those itself.
-- **Recall**: if a durable-memory recall skill is configured, instruct the target to run it on the task's own terms
-  before starting non-trivial work. `/gh-read-plan` recalls on the plan issue's terms; this adds the task-specific
-  angle. Skip for trivial tasks: secretary updates, formatting fixes, mechanical edits.
+- **Recall** (starting prompts only, never in follow-ups): if a durable-memory recall skill is configured, instruct the
+  target to run it on the task's own terms before starting non-trivial work. `/gh-read-plan` recalls on the plan issue's
+  terms; this adds the task-specific angle. Skip for trivial tasks: secretary updates, formatting fixes, mechanical
+  edits.
 - **Pointers**: branch, worktree path, key file paths, sibling checkouts to avoid
 - **Hard constraints**: scope boundaries (no push, no PR create, no amend, no changes outside X, don't delete worktree,
   etc.)
 - **Expected output**: only specify this when there's no skill for the role, OR when the user wants output that differs
   from the skill's default.
+
+The skill invocation, recall, and the implementer's evaluate-the-plan line belong only in a prompt that starts the
+target on the work. A follow-up to a session that is already on it (a correction, a supplement, the next step) carries
+only the new instruction and its constraints. Add the plan reference, telling the target to run
+`/gh-read-plan owner/repo#N` again, only when the plan has changed since the target last read it and the follow-up
+depends on that change.
 
 ## Find the plan issue
 
@@ -54,12 +61,12 @@ non-skill-covered context (scope, constraints, refs).
 - Constraints: do not write code or draft final prose. If producing a new plan, invoke `/gh-create-plan`. If updating
   an existing plan, invoke `/gh-update-plan`.
 
-**implementer** - always include `Invoke /gh-implement-plan owner/repo#N` in the generated prompt. The plan issue ref
-is required; if this session has one, use it. If not, ask the user.
+**implementer** - when starting an implementer on the work, include `Invoke /gh-implement-plan owner/repo#N`. The
+plan issue ref is required; if this session has one, use it. If not, ask the user.
 - Add branch/worktree/constraints.
 - Implementers only commit locally. Never tell them to push, open PRs, or create PRs. The user handles that separately.
-- Always include: "As you implement, critically evaluate the plan and design. If you encounter something that seems
-  wrong, unclear, or worth reconsidering, stop and report back before continuing."
+- In that starting prompt, also include: "As you implement, critically evaluate the plan and design. If you encounter
+  something that seems wrong, unclear, or worth reconsidering, stop and report back before continuing."
 
 **reviewer** - for a PR, use `/gh-review-pr <pr-ref>` from
 [claude-review-skills](https://github.com/gjoranv/claude-review-skills) if it is installed. For a branch or local
