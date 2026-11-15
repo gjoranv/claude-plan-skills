@@ -29,6 +29,7 @@ Never embed content directly in shell arguments or use `-f body=@file` (it uploa
    - **`### Session:` prefix**: These are session summaries. Delete them and consolidate into a single **Session Log** comment with dated sections (`### YYYY-MM-DD`). Keep only key findings, decisions, and insights. Drop sessions with nothing noteworthy.
    - **Any other heading** (e.g. "Research:", "Considered:", "Implementation notes:", "Verification:"): These are standalone findings with lasting value. Keep them as separate comments, or merge into the Design comment if they are design decisions.
    **Never delete structural comments** (Steps, Design, Diagram, Links, Useful commands, Agent sessions, PRs). See `gh-create-plan` for the canonical list and order.
+   **Tidy the Links comment**: give every bare link a one-line description and group the links under short headings when there are more than 10, as `gh-update-plan` step 7 describes.
 6. **Capture learnings**: Before closing, review the work for non-obvious discoveries worth persisting. If a durable-memory CLI is configured, offer its capture flow. Otherwise, ask the user "Anything worth capturing?" and propose where each belongs:
    - **Instructions file** (CLAUDE.md, AGENTS.md, or similar): conventions, gotchas, build quirks
    - **Repo docs** (`docs/` or similar): architecture insights, design rationale
