@@ -84,4 +84,4 @@ Both fields are optional. If only one is set, it's used by default. `/gh-create-
 
 - [claude-review-skills](https://github.com/gjoranv/claude-review-skills) - skills for the PR review cycle; `/prompt-session reviewer` points at its `/gh-review-pr`
 - [Claude Code Doesn't Remember. Here's How I Fixed That.](https://medium.com/@gjoranv/claude-code-doesnt-remember-here-s-how-i-fixed-that-0992cbeb6d37) - how these skills work and why GitHub issues are the persistence layer
-- [I Don't Start With a Plan. Here's What I Do First.](https://medium.com/@gjoranv/i-dont-start-with-a-plan-here-s-what-i-do-first-9f6192177298) - the investigation phase before creating a plan, and the handover skill for continuing across sessions
+- [Vibe Coding Works Until It Doesn't. Here's What I Do Instead.](https://medium.com/@gjoranv/i-dont-start-with-a-plan-here-s-what-i-do-first-9f6192177298) - the investigation phase before creating a plan, and the handover skill for continuing across sessions
